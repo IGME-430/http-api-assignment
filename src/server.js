@@ -23,10 +23,13 @@ const onRequest = (request, response) => {
   const page = request.url.split('?');
   const params = {};
 
+  console.dir(parsedUrl);
+  console.dir(page);
+
   const acceptIndex = 0;
   params.acceptHeader = request.headers.accept.split(',')[acceptIndex];
 
-  const urlIndex = 1;
+  const urlIndex = 0;
   params.url = page[urlIndex];
 
   params.properties = query.parse(page[1]);
