@@ -124,15 +124,15 @@ const unauthorized = (request, response, params) => {
   return returnValue;
 };
 
-function unauthorizedMeta (request, response, params) {
+function unauthorizedMeta(request, response, params) {
   return respondMeta(request, response, 401, params);
 }
 
-function forbidden (request, response, params) {
+function forbidden(request, response, params) {
   return respond(request, response, 403, params);
 }
 
-function forbiddenMeta (request, response, params) {
+function forbiddenMeta(request, response, params) {
   return respondMeta(request, response, 403, params);
 }
 
