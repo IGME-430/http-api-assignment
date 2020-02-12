@@ -7,15 +7,27 @@ const responseHandler = require('./responses.js');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
-  '/': htmlHandler.getIndex,
-  '/style.css': htmlHandler.getCSS,
-  '/success': responseHandler.success,
-  '/badRequest': responseHandler.badRequest,
-  '/unauthorized': responseHandler.unauthorized,
-  '/forbidden': responseHandler.forbidden,
-  '/internal': responseHandler.internal,
-  '/notImplemented': responseHandler.notImplemented,
-  notFound: responseHandler.notFound,
+  'GET': {
+    '/': htmlHandler.getIndex,
+    '/style.css': htmlHandler.getCSS,
+    '/success': responseHandler.success,
+    '/badRequest': responseHandler.badRequest,
+    '/unauthorized': responseHandler.unauthorized,
+    '/forbidden': responseHandler.forbidden,
+    '/internal': responseHandler.internal,
+    '/notImplemented': responseHandler.notImplemented,
+    notFound: responseHandler.notFound,
+  },
+  'HEAD': {
+    '/success': responseHandler.successMeta,
+    '/badRequest': responseHandler.badRequestMeta,
+    '/unauthorized': responseHandler.unauthorizedMeta,
+    '/forbidden': responseHandler.forbiddenMeta,
+    '/internal': responseHandler.internalMeta,
+    '/notImplemented': responseHandler.notImplementedMeta,
+    notFound: responseHandler.notFoundMeta,
+  }
+
 };
 
 const onRequest = (request, response) => {
@@ -34,10 +46,10 @@ const onRequest = (request, response) => {
 
   params.properties = query.parse(page[1]);
 
-  if (urlStruct[parsedUrl.pathname]) {
-    urlStruct[parsedUrl.pathname](request, response, params);
+  if (urlStruct[request.method][parsedUrl.pathname]) {
+    urlStruct[request.method][parsedUrl.pathname](request, response, params);
   } else {
-    urlStruct.notFound(request, response, params);
+    urlStruct[request.method].notFound(request, response, params);
   }
 };
 
